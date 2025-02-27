@@ -1,7 +1,6 @@
 package overridetech.jdbc.jpa.dao;
-
-import overridetech.jdbc.jpa.BDConection;
 import overridetech.jdbc.jpa.model.User;
+import overridetech.jdbc.jpa.util.Util;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 + "name VARCHAR(255) NOT NULL,"
                 + "lastName VARCHAR(255) NOT NULL,"
                 + "age SMALLINT)";
-        try (Connection conection = BDConection.connectToDatebase();
+        try (Connection conection = Util.connectToDatebase();
              PreparedStatement statement = conection.prepareStatement(create)) {
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -28,7 +27,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         String drop = "DROP TABLE IF EXISTS users";
-        try (Connection connection = BDConection.connectToDatebase();
+        try (Connection connection = Util.connectToDatebase();
              PreparedStatement statement = connection.prepareStatement(drop)) {
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -38,7 +37,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void saveUser(String name, String lastName, byte age) {
         String query = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?);";
-        try (Connection connection = BDConection.connectToDatebase();
+        try (Connection connection = Util.connectToDatebase();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, name);
             statement.setString(2, lastName);
@@ -52,7 +51,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String query = "DELETE FROM users WHERE id = ?;";
-        try (Connection connection = BDConection.connectToDatebase();
+        try (Connection connection = Util.connectToDatebase();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -64,7 +63,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users;";
-        try (Connection connection = BDConection.connectToDatebase();
+        try (Connection connection = Util.connectToDatebase();
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()){
@@ -83,7 +82,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() {
         String query = "TRUNCATE TABLE users;";
-        try (Connection connection = BDConection.connectToDatebase();
+        try (Connection connection = Util.connectToDatebase();
         PreparedStatement statement = connection.prepareStatement(query)) {
             statement.executeUpdate();
         } catch (SQLException e) {
