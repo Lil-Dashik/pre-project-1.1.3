@@ -1,12 +1,12 @@
 package overridetech.jdbc.jpa.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
-@Table(name = "users")
+@Entity
+@Table(name = "users", schema = "public")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -59,6 +59,7 @@ public class User {
     public void setAge(Byte age) {
         this.age = age;
     }
+
     @Override
     public String toString() {
         return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", age=" + age + "]";
